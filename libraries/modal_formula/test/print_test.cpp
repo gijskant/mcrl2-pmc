@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(test_abp)
   run_test_case("mu X. !!X", lps_spec);
   run_test_case("nu X. [true]X && <true>true", lps_spec);
   run_test_case("nu X. [true]X && forall d: D. [r1(d)]mu Y. <true>Y || <s4(d)>true", lps_spec);
-  run_test_case("forall d: D. nu X. [!r1(d)]X && [s4(d)]false", lps_spec);
+  run_test_case("forall d: D. (nu X. [!r1(d)]X && [s4(d)]false)", lps_spec);
   run_test_case("nu X. [true]X && forall d: D. [r1(d)]nu Y. [!r1(d) && !s4(d)]Y && [r1(d)]false", lps_spec);
   run_test_case("mu X. !X", lps_spec);
   run_test_case("mu X. nu Y. X => Y", lps_spec);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(test_abp)
   run_test_case("mu X. X || mu X. X", lps_spec);
   run_test_case("(mu X. X) || mu Y. Y", lps_spec);
   run_test_case("!(mu X. X || mu X. X)", lps_spec);
-  run_test_case("(forall d: D. nu X. X) && false", lps_spec);
+  run_test_case("(forall d: D. (nu X. X)) && false", lps_spec);
   run_test_case("val(true)", lps_spec);
   run_test_case("delay @ 4", lps_spec);
   run_test_case("nu Z(i: Nat = 0). Z(2)", lps_spec);

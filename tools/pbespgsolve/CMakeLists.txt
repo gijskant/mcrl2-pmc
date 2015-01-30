@@ -22,3 +22,29 @@ add_mcrl2_tool(pbespgsolve
     mcrl2_pbes
     mcrl2_bes
 )
+add_mcrl2_library(pbespgsolve
+  INSTALL_HEADERS TRUE
+  SOURCEDIR .
+  SOURCES
+    Abortable.cpp
+    ComponentSolver.cpp
+    DecycleSolver.cpp
+    DeloopSolver.cpp
+    FocusListLiftingStrategy.cpp
+    Graph.cpp
+    LiftingStrategy.cpp
+    LinearLiftingStrategy.cpp
+    MaxMeasureLiftingStrategy.cpp
+    OldMaxMeasureLiftingStrategy.cpp
+    ParityGame.cpp
+    ParityGame_IO.cpp
+    ParityGame_verify.cpp
+    ParityGameSolver.cpp
+    pbespgsolve.cpp
+    PredecessorLiftingStrategy.cpp
+    RecursiveSolver.cpp
+    SmallProgressMeasures.cpp
+  DEPENDS
+    mcrl2_pbes
+    mcrl2_bes
+)

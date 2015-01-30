@@ -2,6 +2,9 @@ set(MCRL2_TOOLS
   besinfo
   bespp
   diagraphica
+  formulaparelm
+  formulaquotient
+  formularewr 
   lps2lts
   lps2pbes
   lps2torx
