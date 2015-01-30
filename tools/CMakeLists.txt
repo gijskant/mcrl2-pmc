@@ -31,6 +31,7 @@ set(MCRL2_TOOLS
   mcrl22lps
   mcrl2i
   mcrl2xi
+  network2lts
   pbes2bool
   pbes2bes
   pbesconstelm

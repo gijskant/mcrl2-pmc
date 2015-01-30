@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <functional>
 
+#include <boost/iterator/filter_iterator.hpp>
+
 #include "mcrl2/data/data_specification.h"
 #include "mcrl2/utilities/exception.h"
 
@@ -163,11 +165,18 @@ class representative_generator
 
         // check if there is a mapping with sort s (constructors with sort s cannot exist).
         const function_symbol_vector local_mappings(m_specification.mappings(sort.target_sort()));
+        mCRL2log(log::debug) << "find_representative: sort = " << pp(sort)
+            << ", local_mappings = " << pp(local_mappings) << " (" << local_mappings.size() << ")" << std::endl;
 
+        auto f = [&](function_symbol s)
+        {
+          return detail::has_sort(sort)(s) && !sort_int::is_negate_function_symbol(s);
+        };
         for (function_symbol_vector::const_iterator i =
                std::find_if(local_mappings.begin(), local_mappings.end(),
-                            detail::has_sort(sort)); i != local_mappings.end();)
+                            f); i != local_mappings.end();)
         {
+          mCRL2log(log::debug) << "find_representative: repr = " << pp(*i) << std::endl;
           return set_representative(sort, *i);
         }
       }
