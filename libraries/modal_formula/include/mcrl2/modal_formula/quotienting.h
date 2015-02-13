@@ -830,7 +830,7 @@ public:
 /// \param x an object containing state formulas
 template <typename T>
 void quotient(T& x, const lps::specification& spec, const lps::synchronization_vector& v, size_t i, quotienting_options options,
-    typename std::enable_if<!std::is_base_of<atermpp::aterm, T>::value>::type* = 0)
+    typename std::enable_if<!std::is_base_of<atermpp::aterm, T>::value>::type*)
 {
   quotient_builder f(spec, v, i, options);
   f.add_identifiers(x);
@@ -841,7 +841,7 @@ void quotient(T& x, const lps::specification& spec, const lps::synchronization_v
 /// \param x an object containing state formulas
 template <typename T>
 T quotient(const T& x, const lps::specification& spec, const lps::synchronization_vector& v, size_t i, quotienting_options options,
-    typename std::enable_if<std::is_base_of<atermpp::aterm, T>::value>::type* = 0)
+    typename std::enable_if<std::is_base_of<atermpp::aterm, T>::value>::type*)
 {
   quotient_builder f(spec, v, i, options);
   f.add_identifiers(x);

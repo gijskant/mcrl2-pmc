@@ -32,7 +32,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
   typedef pbes_expression_builder<Derived> super;
   using super::enter;
   using super::leave;
-  using super::operator();
+  using super::apply;
 
   bool is_data(const pbes_expression& x) const
   {
@@ -175,7 +175,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
     return x;
   }
 
-  pbes_expression operator()(const pbes_expression& x)
+  pbes_expression apply(const pbes_expression& x)
   {
     return pbes2data(x);
   }
@@ -186,7 +186,7 @@ T pbes2data(const T& x,
             typename std::enable_if<std::is_base_of<atermpp::aterm, T>::value>::type* = 0
            )
 {
-  return core::make_apply_builder<pbes2data_builder>()(x);
+  return core::make_apply_builder<pbes2data_builder>().apply(x);
 }
 
 template <typename T>
@@ -194,7 +194,7 @@ void pbes2data(T& x,
                typename std::enable_if<!std::is_base_of<atermpp::aterm, T>::value>::type* = 0
               )
 {
-  core::make_apply_builder<pbes2data_builder>()(x);
+  core::make_apply_builder<pbes2data_builder>().apply(x);
 }
 
 } // namespace detail
