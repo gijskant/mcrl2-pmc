@@ -51,7 +51,7 @@ namespace detail
 data::data_expression in(const process::action& a, const action_formulas::action_formula& x, data::set_identifier_generator& id_generator)
 {
   detail::apply_in_traverser<in_traverser> f(a, id_generator);
-  f(x);
+  f.apply(x);
   return f.top();
 }
 

@@ -140,10 +140,6 @@ public:
   {
     (*this).enter(x);
     std::vector<data::data_expression> arguments(x.arguments().begin(), x.arguments().end());
-    for(auto q : quantifier_variable_stack.top())
-    {
-      arguments.push_back(q);
-    }
     variable result(x.name(), data::data_expression_list(arguments.begin(), arguments.end()));
     (*this).leave(x);
     return result;

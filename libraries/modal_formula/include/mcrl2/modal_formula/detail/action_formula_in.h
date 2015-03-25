@@ -50,7 +50,7 @@ data::mutable_map_substitution<> make_fresh_variables(const data::variable_list&
   return result;
 }
 
-
+/// \brief
 data::data_expression in(const process::action& a,
                     const action_formulas::action_formula& x,
                     data::set_identifier_generator& id_generator
@@ -171,7 +171,7 @@ struct in_traverser: public action_formulas::action_formula_traverser<Derived>
     push(data::sort_bool::false_());
   }
 
-  void operator()(const action_formulas::not_& x)
+  void apply(const action_formulas::not_& x)
   {
     push(data::lazy::not_(in(a, x.operand(), id_generator)));
   }
