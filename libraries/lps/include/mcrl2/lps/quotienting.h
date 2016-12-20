@@ -21,6 +21,7 @@ namespace mcrl2 {
 
 namespace lps {
 
+//FIXME: bug
 /// \brief Quotients the synchronization vector for component spec at index i.
 /// \param v the synchronization vector
 /// \param i the index of the component that is quotiented out

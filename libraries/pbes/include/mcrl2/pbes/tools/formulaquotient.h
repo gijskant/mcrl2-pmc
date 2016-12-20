@@ -375,13 +375,13 @@ void formulaquotient(const std::string& input_filename,
         filename_s << input_name << "_" << j << MES_EXT; // input_ext;
         write_mes_to_file(filename_s.str(), mes);
 
-        pbes_system::pbes intermediate_pbes = state_formulas::mes2pbes_approximate(data_spec, mes, true);
+        pbes_system::pbes intermediate_pbes = state_formulas::mes2pbes_approximate(data_spec, mes);
         filename_s.str(""); // clear stream
-        filename_s << input_name << "_" << j << "_T.pbes";
+        filename_s << input_name << "_" << j << ".pbes";
         save_pbes(intermediate_pbes, filename_s.str());
 
         // (partially) solve the PBES using Gauss approximation
-        bool result_under = pbes_partial_solve(intermediate_pbes, true);
+        bool result_under = pbes_partial_solve(intermediate_pbes, false);
         mCRL2log(log::verbose) << "Result for overapproximation: " << (result_under ? "true":"false") << std::endl;
         if (result_under)
         {
@@ -397,6 +397,7 @@ void formulaquotient(const std::string& input_filename,
         }
         // TODO: if not solved, transfer partial results to formula for reduction
 
+        /*
         intermediate_pbes = state_formulas::mes2pbes_approximate(data_spec, mes, false);
         filename_s.str(""); // clear stream
         filename_s << input_name << "_" << j << "_F.pbes";
@@ -416,6 +417,7 @@ void formulaquotient(const std::string& input_filename,
           mes = state_formulas::modal_equation_system(init, eq_list);
           mCRL2log(log::info) << "Formula is false." << std::endl;
         }
+        */
 
       }
       if (tool_options.write_intermediate_networks)
