@@ -598,12 +598,23 @@ public:
     return state_formulas::may(formula, operand);
   }
 
+  static inline
+  state_formulas::state_formula imp(const state_formulas::state_formula& p, const state_formulas::state_formula& q)
+  {
+    if (tr::is_data(p)) {
+      data::data_expression l(p);
+      return optimized::or_(state_formulas::state_formula(data::sort_bool::not_(l)), q);
+    } else {
+      return optimized::or_(tr::not_(p), q);
+    }
+  }
+
   state_formulas::state_formula apply(const state_formulas::must& x)
   {
     (*this).enter(x);
     //mCRL2log(log::debug) << "must [" << pp(x.formula()) << "] " << pp(x.operand()) << ":" << std::endl;
     state_formulas::state_formula result = modality(x.formula(), x.operand(),
-        optimized::forall, optimized::imp, &must, optimized::join_and<std::set<state_formulas::state_formula>::iterator >, tr::false_());
+        optimized::forall, imp, &must, optimized::join_and<std::set<state_formulas::state_formula>::iterator >, tr::false_());
     (*this).leave(x);
     //mCRL2log(log::debug) << "result: " << pp(result) << std::endl;
     return result;
