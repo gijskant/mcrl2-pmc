@@ -190,6 +190,7 @@ pbes_system::pbes mes2pbes(const data::data_specification& data, const modal_equ
   return f(x);
 }
 
+// FIXME: looks wrong, check with paper definition
 // \brief Visitor for transforming a modal equation system to a PBES.
 struct mes2pbes_approximation_builder
 {
@@ -200,99 +201,52 @@ public:
     m_data(data)
   { }
 
-  pbes_system::pbes_expression operator()(const true_& x, bool t)
+  pbes_system::pbes_expression operator()(const true_& x)
   {
-    return t ? pbes_system::true_() : pbes_system::false_();
+    return pbes_system::true_();
   }
 
-  pbes_system::pbes_expression operator()(const false_& x, bool t)
+  pbes_system::pbes_expression operator()(const false_& x)
   {
-    return t ? pbes_system::false_() : pbes_system::true_();
+    return pbes_system::false_();
   }
 
-  pbes_system::pbes_expression operator()(const exists& x, bool t)
+  pbes_system::pbes_expression operator()(const exists& x)
   {
-    if (t)
-    {
-      return pbes_system::exists(x.variables(), (*this)(x.body(), t));
-    }
-    else
-    {
-      return pbes_system::forall(x.variables(), (*this)(x.body(), t));
-    }
+    return pbes_system::exists(x.variables(), (*this)(x.body()));
   }
 
-  pbes_system::pbes_expression operator()(const forall& x, bool t)
+  pbes_system::pbes_expression operator()(const forall& x)
   {
-    if (t)
-    {
-      return pbes_system::forall(x.variables(), (*this)(x.body(), t));
-    }
-    else
-    {
-      return pbes_system::exists(x.variables(), (*this)(x.body(), t));
-    }
+    return pbes_system::forall(x.variables(), (*this)(x.body()));
   }
 
-  // FIXME
-  pbes_system::pbes_expression operator()(const imp& x, bool t)
+  pbes_system::pbes_expression operator()(const or_& x)
   {
-    if (t)
-    {
-      return pbes_system::imp((*this)(x.left(), t), (*this)(x.right(), t));
-    }
-    else
-    {
-      return pbes_system::and_((*this)(x.left(), !t), (*this)(x.right(), t));
-    }
+    return pbes_system::or_((*this)(x.left()), (*this)(x.right()));
   }
 
-  pbes_system::pbes_expression operator()(const or_& x, bool t)
+  pbes_system::pbes_expression operator()(const and_& x)
   {
-    if (t)
-    {
-      return pbes_system::or_((*this)(x.left(), t), (*this)(x.right(), t));
-    }
-    else
-    {
-      return pbes_system::and_((*this)(x.left(), t), (*this)(x.right(), t));
-    }
+    return pbes_system::and_((*this)(x.left()), (*this)(x.right()));
   }
 
-  pbes_system::pbes_expression operator()(const and_& x, bool t)
+  pbes_system::pbes_expression operator()(const variable& x)
   {
-    if (t)
-    {
-      return pbes_system::and_((*this)(x.left(), t), (*this)(x.right(), t));
-    }
-    else
-    {
-      return pbes_system::or_((*this)(x.left(), t), (*this)(x.right(), t));
-    }
+    return pbes_system::propositional_variable_instantiation(x.name(), x.arguments());
   }
 
-  pbes_system::pbes_expression operator()(const not_& x, bool t)
+  pbes_system::pbes_expression operator()(const must& x)
   {
-    return (*this)(x.operand(), !t);
+    return (*this)(x.operand());
   }
 
-  pbes_system::pbes_expression operator()(const variable& x, bool t)
+  pbes_system::pbes_expression operator()(const may& x)
   {
-    core::identifier_string name(((std::string)x.name()) + (t ? "_T" : "_F"));
-    return pbes_system::propositional_variable_instantiation(name, x.arguments());
+    return pbes_system::false_();
   }
 
-  pbes_system::pbes_expression operator()(const must& x, bool t)
-  {
-    return t ? (*this)(x.operand(), t) : pbes_system::false_();
-  }
-
-  pbes_system::pbes_expression operator()(const may& x, bool t)
-  {
-    return t ? pbes_system::false_() : (*this)(x.operand(), t);
-  }
-
-  pbes_system::pbes_expression operator()(const state_formulas::state_formula& x, bool t)
+  pbes_system::pbes_expression operator()(const state_formulas::state_formula& x)
   {
     pbes_system::pbes_expression result;
     if (data::is_data_expression(x))
@@ -301,43 +255,43 @@ public:
     }
     else if (state_formulas::is_true(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::true_>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::true_>(x));
     }
     else if (state_formulas::is_false(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::false_>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::false_>(x));
     }
     else if (state_formulas::is_not(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::not_>(x), t);
+      throw std::runtime_error("No negation allowed in equations. Please normalise formula first.");
     }
     else if (state_formulas::is_and(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::and_>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::and_>(x));
     }
     else if (state_formulas::is_or(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::or_>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::or_>(x));
     }
     else if (state_formulas::is_imp(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::imp>(x), t);
+      throw std::runtime_error("No implication allowed in equations. Please normalise formula first.");
     }
     else if (state_formulas::is_forall(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::forall>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::forall>(x));
     }
     else if (state_formulas::is_exists(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::exists>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::exists>(x));
     }
     else if (state_formulas::is_must(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::must>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::must>(x));
     }
     else if (state_formulas::is_may(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::may>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::may>(x));
     }
     else if (state_formulas::is_yaled(x))
     {
@@ -357,7 +311,7 @@ public:
     }
     else if (state_formulas::is_variable(x))
     {
-      result = (*this)(atermpp::down_cast<state_formulas::variable>(x), t);
+      result = (*this)(atermpp::down_cast<state_formulas::variable>(x));
     }
     else if (state_formulas::is_nu(x))
     {
@@ -370,53 +324,39 @@ public:
     return result;
   }
 
-  pbes_system::pbes operator()(const modal_equation_system& x, bool t)
+  pbes_system::pbes operator()(const modal_equation_system& x)
   {
     std::vector<pbes_system::pbes_equation> equations;
     for(auto e : x.equations())
     {
-      pbes_system::pbes_equation eq = (*this)(e, true);
-      equations.push_back(eq);
-    }
-    for(auto e : x.equations())
-    {
-      pbes_system::pbes_equation eq = (*this)(e, false);
+      pbes_system::pbes_equation eq = (*this)(e);
       equations.push_back(eq);
     }
     return pbes_system::pbes(m_data, equations,
-        atermpp::down_cast<pbes_system::propositional_variable_instantiation>((*this)(x.initial_state(), t))
+        atermpp::down_cast<pbes_system::propositional_variable_instantiation>((*this)(x.initial_state()))
         );
   }
 
-  pbes_system::fixpoint_symbol operator()(const fixpoint_symbol& x, bool t)
+  pbes_system::fixpoint_symbol operator()(const fixpoint_symbol& x)
   {
-    if (t)
-    {
-      return pbes_system::fixpoint_symbol(x);
-    }
-    else
-    {
-
-      return pbes_system::fixpoint_symbol((x.is_nu()) ? fixpoint_symbol::mu() : fixpoint_symbol::nu());
-    }
+    return pbes_system::fixpoint_symbol(x);
   }
 
-  pbes_system::pbes_equation operator()(const modal_equation& x, bool t)
+  pbes_system::pbes_equation operator()(const modal_equation& x)
   {
-    core::identifier_string name(((std::string)x.name()) + (t ? "_T" : "_F"));
     return pbes_system::pbes_equation(
-        (*this)(x.symbol(), t),
-        pbes_system::propositional_variable(name, x.parameters()),
-        (*this)(x.formula(), t)
+        (*this)(x.symbol()),
+        pbes_system::propositional_variable(x.name(), x.parameters()),
+        (*this)(x.formula())
     );
   }
 
 };
 
-pbes_system::pbes mes2pbes_approximate(const data::data_specification& data, const modal_equation_system& x, bool underapproximate)
+pbes_system::pbes mes2pbes_approximate(const data::data_specification& data, const modal_equation_system& x)
 {
   mes2pbes_approximation_builder f(data);
-  return f(x, underapproximate);
+  return f(x);
 }
 
 } // namespace state_formulas
