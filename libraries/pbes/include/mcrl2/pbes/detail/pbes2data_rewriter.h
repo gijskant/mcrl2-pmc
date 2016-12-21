@@ -102,7 +102,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::not_(operand);
+        return pbes_system::optimized_not(operand);
       }
     }
     else if (is_and(x))
@@ -115,7 +115,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::and_(l, r);
+        return pbes_system::optimized_and(l, r);
       }
     }
     else if (is_or(x))
@@ -128,7 +128,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::or_(l, r);
+        return pbes_system::optimized_or(l, r);
       }
 
     }
@@ -142,7 +142,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::imp(l, r);
+        return pbes_system::optimized_imp(l, r);
       }
 
     }
@@ -156,7 +156,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::forall(y.variables(), operand);
+        return pbes_system::optimized_forall(y.variables(), operand);
       }
     }
     else if (is_exists(x))
@@ -169,7 +169,7 @@ struct pbes2data_builder: public pbes_expression_builder<Derived>
       }
       else
       {
-        return pbes_expr_optimized::exists(y.variables(), operand);
+        return pbes_system::optimized_exists(y.variables(), operand);
       }
     }
     return x;

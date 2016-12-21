@@ -48,7 +48,7 @@ namespace lps
     return ss.str();
   }
 
-  void explore(const std::vector<lps::specification>& specifications,
+  void explore(const std::vector<lps::stochastic_specification>& specifications,
       const lps::synchronization_vector& synchronization_vector,
       const std::vector<next_state_generator*>& generators,
       /*substitution_t* substitution,*/
@@ -67,7 +67,7 @@ namespace lps
     for(auto s_it = specifications.begin(); s_it != specifications.end(); ++s_it)
     {
       mCRL2log(log::debug) << "Exploring local transitions of component " << index << "..." << std::endl;
-      lps::specification spec = (*s_it);
+      lps::stochastic_specification spec = (*s_it);
       size_t size = spec.process().process_parameters().size();
       std::vector<data::data_expression> local_state_vector;
       if (state_it == state.end())
@@ -211,7 +211,7 @@ namespace lps
             state_t target(target_vector.begin(), target_vector.size());
             transition_t transition;
             transition.set_target_state(target);
-            transition.set_action(process::action(label, args));
+            transition.set_action(multi_action(process::action(label, args)));
             transition.set_summand_index(vector_index);
             transitions.push_back(transition);
             mCRL2log(log::debug) << "Target: " << state_to_string(generators[0], target) <<
