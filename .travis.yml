@@ -1,0 +1,21 @@
+language: cpp
+
+compiler:
+- clang
+- gcc
+
+os:
+- linux
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - libboost-all-dev
+
+before_script:
+- cmake . -DMCRL2_ENABLE_GUI_TOOLS=OFF -DMCRL2_ENABLE_EXPERIMENTAL=ON
+
+script:
+- make && ctest
+
