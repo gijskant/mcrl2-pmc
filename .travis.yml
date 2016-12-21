@@ -9,8 +9,11 @@ os:
 
 addons:
   apt:
+    sources:
+      - george-edison55-precise-backports
     packages:
       - cmake
+      - cmake-data
       - libboost-all-dev
 
 before_script:
