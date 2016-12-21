@@ -20,7 +20,7 @@
 #include "mcrl2/modal_formula/state_formula.h"
 #include "mcrl2/modal_formula/state_formula_traits.h"
 #include "mcrl2/utilities/detail/join.h"
-#include "mcrl2/utilities/optimized_boolean_operators.h"
+#include "mcrl2/data/optimized_boolean_operators.h"
 
 namespace mcrl2 {
 
@@ -38,7 +38,7 @@ struct term_traits_optimized<state_formulas::state_formula>: public core::term_t
   static inline
   term_type not_(const term_type& p)
   {
-    return utilities::optimized_not(p);
+    return data::optimized_not(p);
   }
 
   /// \brief Make a conjunction
@@ -48,7 +48,7 @@ struct term_traits_optimized<state_formulas::state_formula>: public core::term_t
   static inline
   term_type and_(const term_type& p, const term_type& q)
   {
-    return utilities::optimized_and(p, q);
+    return data::optimized_and(p, q);
   }
 
   /// \brief Make a disjunction
@@ -58,7 +58,7 @@ struct term_traits_optimized<state_formulas::state_formula>: public core::term_t
   static inline
   term_type or_(const term_type& p, const term_type& q)
   {
-    return utilities::optimized_or(p, q);
+    return data::optimized_or(p, q);
   }
 
   /// \brief Make an implication
@@ -68,7 +68,7 @@ struct term_traits_optimized<state_formulas::state_formula>: public core::term_t
   static inline
   term_type imp(const term_type& p, const term_type& q)
   {
-    return utilities::optimized_imp(p, q);
+    return data::optimized_imp(p, q);
   }
 
   /// \brief Returns or applied to the sequence of state formulas [first, last)
