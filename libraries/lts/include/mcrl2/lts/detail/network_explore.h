@@ -40,7 +40,7 @@ struct network_explore_options
   {  }
 
   lps::network network;
-  std::vector<lps::specification> specifications;
+  std::vector<lps::stochastic_specification> specifications;
 
   mcrl2::data::rewriter::strategy strat;
   exploration_strategy expl_strat;

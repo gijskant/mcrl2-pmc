@@ -21,7 +21,7 @@
 #include "mcrl2/modal_formula/replace.h"
 #include "mcrl2/modal_formula/traverser.h"
 //#include "mcrl2/pbes/detail/lps2pbes_utility.h"
-#include "mcrl2/utilities/optimized_boolean_operators.h"
+#include "mcrl2/data/optimized_boolean_operators.h"
 
 
 namespace mcrl2 {
@@ -187,7 +187,7 @@ struct in_traverser: public action_formulas::action_formula_traverser<Derived>
   {
     data::data_expression right = pop();
     data::data_expression left = pop();
-    push(utilities::optimized_or(left, right));
+    push(data::optimized_or(left, right));
   }
 
   void leave(const action_formulas::imp&)
@@ -203,7 +203,7 @@ struct in_traverser: public action_formulas::action_formula_traverser<Derived>
     std::set<data::variable> sigma_x_variables = data::substitution_variables(sigma_x);
     action_formulas::action_formula alpha = x.body();
     data::variable_list y = data::replace_variables(x.variables(), sigma_x);
-    push(utilities::optimized_forall(y, in(a, action_formulas::replace_variables_capture_avoiding(alpha, sigma_x, sigma_x_variables), id_generator)));
+    push(data::optimized_forall(y, in(a, action_formulas::replace_variables_capture_avoiding(alpha, sigma_x, sigma_x_variables), id_generator)));
   }
 
   void apply(const action_formulas::exists& x)
@@ -212,7 +212,7 @@ struct in_traverser: public action_formulas::action_formula_traverser<Derived>
     std::set<data::variable> sigma_x_variables = data::substitution_variables(sigma_x);
     action_formulas::action_formula alpha = x.body();
     data::variable_list y = data::replace_variables(x.variables(), sigma_x);
-    push(utilities::optimized_exists(y, in(a, action_formulas::replace_variables_capture_avoiding(alpha, sigma_x, sigma_x_variables), id_generator)));
+    push(data::optimized_exists(y, in(a, action_formulas::replace_variables_capture_avoiding(alpha, sigma_x, sigma_x_variables), id_generator)));
   }
 
 };

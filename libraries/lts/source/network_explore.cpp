@@ -36,7 +36,7 @@ bool network2lts_algorithm::initialise_lts_generation(network_explore_options *o
   std::vector<data::variable> parameters;
   for(auto s_it = network.lps_filenames().begin(); s_it != network.lps_filenames().end(); ++s_it)
   {
-    lps::specification spec;
+    lps::stochastic_specification spec;
     load_lps(spec, *s_it);
     resolve_summand_variable_name_clashes(spec);
     m_options.specifications.push_back(spec);
@@ -104,7 +104,7 @@ bool network2lts_algorithm::generate_lts()
   }
   else if (m_options.outformat != lts_none)
   {
-    m_initial_state_number = m_output_lts.add_state(initial_state);
+    m_initial_state_number = m_output_lts.add_state(state_label_lts(initial_state));
     m_output_lts.set_initial_state(m_initial_state_number);
   }
   m_num_states = 1;
@@ -217,7 +217,7 @@ bool network2lts_algorithm::add_transition(const network2lts_algorithm::state_t 
 
     if (m_options.outformat != lts_none && m_options.outformat != lts_aut)
     {
-      size_t state_number = m_output_lts.add_state(transition.target_state());
+      size_t state_number = m_output_lts.add_state(state_label_lts(transition.target_state()));
       assert(state_number == destination_state_number.first);
       static_cast <void>(state_number);
     }
@@ -232,7 +232,7 @@ bool network2lts_algorithm::add_transition(const network2lts_algorithm::state_t 
     std::pair<size_t, bool> action_label_number = m_action_label_numbers.put(lps::detail::multi_action_to_aterm(transition.action()));
     if (action_label_number.second)
     {
-      size_t action_number = m_output_lts.add_action(transition.action(), transition.action().actions().size() == 0);
+      size_t action_number = m_output_lts.add_action(action_label_lts(transition.action()));
       assert(action_number == action_label_number.first);
       static_cast <void>(action_number); // Avoid a warning when compiling in non debug mode.
     }

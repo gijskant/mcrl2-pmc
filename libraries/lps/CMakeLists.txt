@@ -9,7 +9,6 @@ add_mcrl2_library(lps
     next_state_generator.cpp
     simulation.cpp
     synchronization_vector.cpp
-    typecheck.cpp
   DEPENDS
     mcrl2_core
     mcrl2_data

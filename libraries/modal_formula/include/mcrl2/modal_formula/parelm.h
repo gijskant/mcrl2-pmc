@@ -22,7 +22,7 @@
 #include "mcrl2/utilities/logger.h"
 #include "mcrl2/utilities/detail/iota.h"
 #include "mcrl2/data/detail/assignment_functional.h"
-#include "mcrl2/data/detail/sorted_sequence_algorithm.h"
+//#include "mcrl2/utilities/detail/container_utility.h"
 #include "mcrl2/modal_formula/algorithms.h"
 #include "mcrl2/modal_formula/modal_equation_system.h"
 #include "mcrl2/modal_formula/traverser.h"

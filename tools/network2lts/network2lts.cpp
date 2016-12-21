@@ -19,7 +19,7 @@
 #include "mcrl2/utilities/logger.h"
 
 #include "mcrl2/utilities/input_output_tool.h"
-#include "mcrl2/utilities/rewriter_tool.h"
+#include "mcrl2/data/rewriter_tool.h"
 
 #include "mcrl2/lps/multi_action.h"
 #include "mcrl2/process/action_parse.h"
@@ -31,6 +31,7 @@
 #define STRINGIFY(x) __STRINGIFY(x)
 
 using namespace std;
+using namespace mcrl2::data::tools;
 using namespace mcrl2::utilities::tools;
 using namespace mcrl2::utilities;
 using namespace mcrl2::core;
@@ -38,7 +39,7 @@ using namespace mcrl2::lts;
 using namespace mcrl2::lps;
 using namespace mcrl2::log;
 
-typedef  rewriter_tool< input_output_tool > network2lts_base;
+typedef mcrl2::data::tools::rewriter_tool< input_output_tool > network2lts_base;
 class network2lts_tool : public network2lts_base
 {
   protected:
