@@ -1,20 +1,28 @@
 language: cpp
 
-compiler:
-- clang
-- gcc
-
-os:
-- linux
+sudo: required
+dist: trusty
 
 addons:
   apt:
     sources:
-      - george-edison55-precise-backports
+    - george-edison55-precise-backports
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
     packages:
-      - cmake
-      - cmake-data
-      - libboost-all-dev
+    - gcc-5
+    - g++-5
+    - clang-3.7
+    - cmake
+    - cmake-data
+    - libboost-all-dev
+
+matrix:
+  include:
+    - compiler: gcc
+      env: COMPILER=g++-5
+    - compiler: clang
+      env: COMPILER=clang++-3.7
 
 before_script:
 - cmake . -DMCRL2_ENABLE_GUI_TOOLS=OFF -DMCRL2_ENABLE_EXPERIMENTAL=ON
