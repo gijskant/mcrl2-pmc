@@ -37,6 +37,7 @@
 #include "mcrl2/pbes/io.h"
 #include "mcrl2/pbes/lps2pbes.h"
 #include "mcrl2/pbes/mes2pbes.h"
+#include "mcrl2/process/label_generator.h"
 #include "mcrl2/utilities/logger.h"
 
 namespace mcrl2 {
@@ -270,7 +271,7 @@ void formulaquotient(const std::string& input_filename,
       }
       v = network.synchronization_vector();
       //state_formula result_formula;
-      label_generator label_generator;
+      process::label_generator label_generator;
       {
         boost::timer t;
         mCRL2log(log::verbose) << "computing quotient formula for the process at index " << 0 << "..." << std::endl;
@@ -512,7 +513,7 @@ void formulaquotient(const std::string& input_filename,
     // compute quotient network
     if (!output_network_filename.empty())
     {
-      label_generator label_generator = f.label_generator();
+      process::label_generator label_generator = f.label_generator();
       mCRL2log(log::verbose) << "computing quotient network..." << std::endl;
       lps::network result_network = lps::quotient(network, i, label_generator);
       mCRL2log(log::verbose) << "writing quotient network to file '" <<  output_network_filename << "'..." << std::endl;

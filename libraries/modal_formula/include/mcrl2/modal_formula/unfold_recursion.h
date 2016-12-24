@@ -17,6 +17,7 @@
 #include "mcrl2/modal_formula/builder.h"
 #include "mcrl2/modal_formula/formula_size.h"
 #include "mcrl2/modal_formula/replace.h"
+#include "mcrl2/modal_formula/rewrite_quantifiers.h"
 #include "mcrl2/modal_formula/simplifying_rewriter.h"
 #include "mcrl2/modal_formula/state_formula.h"
 #include "mcrl2/modal_formula/state_formula_traits.h"

@@ -27,6 +27,8 @@
 #include "mcrl2/modal_formula/state_formula_traits.h"
 #include "mcrl2/modal_formula/state_formulas_optimized.h"
 #include "mcrl2/modal_formula/detail/action_formula_in.h"
+
+#include "mcrl2/process/label_generator.h"
 #include "mcrl2/utilities/detail/join.h"
 
 
@@ -63,7 +65,7 @@ struct quotient_builder: public state_formula_builder<quotient_builder>
   lps::synchronization_vector v;
   size_t i; // index of component to be quotiented out
   data::set_identifier_generator id_generator;
-  state_formulas::label_generator m_label_generator;
+  process::label_generator m_label_generator;
   quotienting_options m_options;
   std::stack<core::identifier_string> fixpoint_variables;
   std::map<core::identifier_string, std::map<data::variable, data::variable> > generated_variables;
@@ -204,7 +206,7 @@ private:
 public:
 
   quotient_builder(const lps::specification& spec_, const lps::synchronization_vector& v_, int i_,
-      label_generator label_generator,
+      process::label_generator label_generator,
       quotienting_options options = quotienting_options())
     : spec(spec_),
       v(v_),
@@ -244,7 +246,7 @@ public:
     return s.str();
   }
 
-  state_formulas::label_generator& label_generator()
+  process::label_generator& label_generator()
   {
     return m_label_generator;
   }
