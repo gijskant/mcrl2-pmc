@@ -28,5 +28,6 @@ before_script:
 - cmake . -DMCRL2_ENABLE_GUI_TOOLS=OFF -DMCRL2_ENABLE_EXPERIMENTAL=ON
 
 script:
-- make && ctest
+- make
+- ctest -E random --output-on-failure
 
