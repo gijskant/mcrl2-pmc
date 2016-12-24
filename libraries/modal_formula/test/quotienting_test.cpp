@@ -60,8 +60,8 @@ BOOST_AUTO_TEST_CASE(test_quotienting)
   std::clog << "quotienting formula..." << std::endl;
   //state_formulas::state_formula q_formula = state_formulas::algorithms::quotient(formula, spec1, v, 0);
   state_formulas::quotient_builder f(spec1, v, 0);
-  state_formulas::state_formula q_formula = f(formula);
-  state_formulas::label_generator label_generator = f.label_generator();
+  state_formulas::state_formula q_formula = f.apply(formula);
+  process::label_generator label_generator = f.label_generator();
   for(auto it = label_generator.generated_labels().begin(); it != label_generator.generated_labels().end(); ++it)
   {
     spec1.action_labels().push_front(*it);

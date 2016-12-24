@@ -219,12 +219,12 @@ void test_bes()
 }
 
 inline
-bool compare(const pbes_system::pbes_expression& x, const pbes_system::pbes_expression& y, data::detail::Prover* prover)
+bool compare(const pbes_system::pbes_expression& x, const pbes_system::pbes_expression& y)
 {
   return x == y;
 }
 
-typedef bool (*compare_function)(const pbes_system::pbes_expression& x, const pbes_system::pbes_expression& y, data::detail::Prover* prover);
+typedef bool (*compare_function)(const pbes_system::pbes_expression& x, const pbes_system::pbes_expression& y);
 
 void test_approximate()
 {
@@ -238,13 +238,12 @@ void test_approximate()
   data::rewriter::strategy rewrite_strategy(data::parse_rewrite_strategy("jitty"));
   data::rewriter datar(p.data(), rewrite_strategy);
   pbes_system::simplify_data_rewriter<data::rewriter> rewr(datar);
-  data::detail::BDD_Prover prover(p.data(), data::used_data_equation_selector(p.data()));
 
   algorithm.run(
       p.equations().begin(),
       p.equations().end(),
-      approximate<pbes_traits, compare_function, data::detail::Prover*, pbes_system::simplify_data_rewriter<data::rewriter>* >
-        (compare, 0, &prover, &rewr)
+      approximate<pbes_traits, compare_function, pbes_system::simplify_data_rewriter<data::rewriter>* >
+        (compare, 0, &rewr)
         );
   if (tr::is_false(p.equations().front().formula()))
   {
