@@ -13,9 +13,11 @@
 #define MCRL2_LPS_QUOTIENTING_H_
 
 #include "boost/static_assert.hpp"
+#include "mcrl2/lps/io.h"
+#include "mcrl2/lps/network.h"
 #include "mcrl2/lps/specification.h"
 #include "mcrl2/lps/synchronization_vector.h"
-#include "mcrl2/modal_formula/quotienting_utility.h"
+#include "mcrl2/process/label_generator.h"
 
 namespace mcrl2 {
 
@@ -29,7 +31,7 @@ namespace lps {
 lps::synchronization_vector quotient( const lps::synchronization_vector& v,
                                       size_t i,
                                       const lps::specification& spec,
-                                      state_formulas::label_generator& label_generator)
+                                      process::label_generator& label_generator)
 {
   if (v.length() == 0)
   {
@@ -79,7 +81,7 @@ lps::synchronization_vector quotient( const lps::synchronization_vector& v,
 
 lps::network quotient(const lps::network& n,
                       size_t i,
-                      state_formulas::label_generator& label_generator)
+                      process::label_generator& label_generator)
 {
   std::vector<std::string> lps_filenames;
   size_t j = 0;
@@ -88,7 +90,7 @@ lps::network quotient(const lps::network& n,
   {
     if (i == j)
     {
-      load_lps(spec, *it);
+      lps::load_lps(spec, *it);
     }
     else
     {

@@ -12,6 +12,8 @@
 #ifndef MCRL2_PBES_MES2PBES_H_
 #define MCRL2_PBES_MES2PBES_H_
 
+#include "mcrl2/modal_formula/modal_equation_system.h"
+#include "mcrl2/pbes/pbes.h"
 #include "mcrl2/utilities/logger.h"
 
 namespace mcrl2 {
