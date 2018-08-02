@@ -267,11 +267,17 @@ void synchronization_vector::write(std::ostream& out) const
     out << std::endl;
   }*/
   out << "{";
-  bool first = true;
   for(auto it = m_synchronization_vector.begin(); it != m_synchronization_vector.end(); ++it)
   {
-    out << (first ? "" : ",") << std::endl
-        << "  " << pp(*it);
+    out << std::endl << "  ( ";
+    synchronization_vector_element element = *it;
+    std::vector<std::string> labels = element.first;
+    for(auto label_it = labels.begin(); label_it != labels.end(); ++label_it)
+    {
+        out << *label_it << ", ";
+    }
+    out << element.second.name();
+    out << " )";
   }
   out << std::endl << "}" << std::endl;
 }
